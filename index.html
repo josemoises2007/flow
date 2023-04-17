@@ -1,0 +1,38 @@
+<button onclick="notificar()">hola</button>
+<script>function notificar()
+{        
+    var notificacao = new Notification('Titulo da notificacao', {
+        icon: 'go.jpg', //img
+        body: 'Mensagem'
+    });
+
+    notificacao.onclick = function () {
+        window.open('http://google.com/'); //site
+    };
+}
+
+function semPermissao()
+{
+    console.warn('O usuário não permitiu notificações');
+}
+
+function minhaNotificao()
+{
+    if (!('Notification' in window)) {
+        console.warn("Este browser não suporta notificações de Desktop");
+    } else if (Notification.permission === 'granted') {
+        notificar();
+    } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission(function (permission) {
+            if (permission === 'granted') {
+                notificar();
+            } else {
+                semPermissao();
+            }
+        });
+    } else {
+        semPermissao();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', minhaNotificao);</script>
